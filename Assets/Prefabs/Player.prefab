@@ -159,7 +159,7 @@ MonoBehaviour:
   itemHolder: {fileID: 7838684673948338503}
   heldItem: {fileID: 0}
   interactButton: {fileID: 0}
-  interactYOffset: 0.5
+  interactYOffset: 1
   interactableIndicatorPrefab: {fileID: 0}
   closestItem: {fileID: 0}
   range: 5
@@ -169,6 +169,7 @@ MonoBehaviour:
   itemLayerMask:
     serializedVersion: 2
     m_Bits: 256
+  throwForce: 10
 --- !u!114 &6643040474106208367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,15 +182,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 115e6744777eb8e45be8f19d1f52c986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundingLayerMask:
-    serializedVersion: 2
-    m_Bits: 137
   speed: 7.5
   acceleration: 60
   deceleration: 80
   jumpHeight: 2.5
-  extraDownGravity: 2
+  extraDownGravity: 4
   downDampening: 2
+  gravity: 1
+  groundingLayerMask:
+    serializedVersion: 2
+    m_Bits: 137
+  jumpCooldown: 0.15
   headLight: {fileID: 7205706949926052289}
   lightPos1: {fileID: 6979681388717933866}
   lightPos2: {fileID: 1658371948442363423}

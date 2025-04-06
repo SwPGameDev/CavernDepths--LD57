@@ -6,20 +6,29 @@ public class ItemBehavior : MonoBehaviour
     public enum ItemTypes
     {
         None,
-        Pickaxe,
+        Melee,
         Gun,
         Bomb
     }
 
     public ItemTypes ItemType = ItemTypes.None;
+
     private bool held = false;
 
-    private bool canUse = true;
+    // STATS
     public float useCooldown = 0.25f;
     private float useTimer = 0f;
+    private bool canUse = true;
+
+    // GUN
+    public int maxAmmoCount = 1;
+    private int currentAmmo;
+    bool reloading = false;
+    public float reloadCooldown = 0.75f;
+    float reloadTimer = 0f;
+
 
     private Animator anim;
-
     private Collider2D col;
     private Rigidbody2D rb;
 
@@ -32,6 +41,8 @@ public class ItemBehavior : MonoBehaviour
         anim = GetComponent<Animator>();
         col = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
+
+        currentAmmo = maxAmmoCount;
     }
 
     private void Update()
@@ -47,23 +58,31 @@ public class ItemBehavior : MonoBehaviour
                     canUse = true;
                 }
             }
+
+            if (reloading)
+            {
+                reloadTimer += Time.deltaTime;
+                if (reloadTimer > reloadCooldown)
+                {
+                    reloadTimer = 0f;
+                    reloading = false;
+                }
+            }
         }
     }
 
     private void OnTriggerStay2D(Collider2D collider)
     {
-        if (collider.gameObject.layer == 7)
+        if (ItemType == ItemTypes.Melee)
         {
-            if (!hitDict.ContainsKey(collider))
+            if (collider.gameObject.layer == 7)
             {
-                hitDict.Add(collider, true);
-                collider.GetComponent<Block>().TakeHit(damage);
+                if (!hitDict.ContainsKey(collider))
+                {
+                    hitDict.Add(collider, true);
+                    collider.GetComponent<Block>().TakeHit(damage);
+                }
             }
-        }
-
-        foreach (KeyValuePair<Collider2D, bool> items in hitDict)
-        {
-            Debug.Log("HitDict: " + items.Key + " " + items.Value);
         }
     }
 
@@ -75,12 +94,12 @@ public class ItemBehavior : MonoBehaviour
         {
             switch (ItemType)
             {
-                case ItemTypes.Pickaxe:
+                case ItemTypes.Melee:
                     anim.SetTrigger("swing");
                     break;
                 case ItemTypes.Gun:
                     //anim.SetTrigger("shoot");
-                    //Shoot();
+                    Shoot();
                     break;
                 case ItemTypes.Bomb:
                     //anim.SetTrigger("light");
@@ -90,6 +109,12 @@ public class ItemBehavior : MonoBehaviour
 
             canUse = false;
         }
+    }
+
+    void Shoot()
+    {
+        // Spawn bullet
+
     }
 
     public void Throw()

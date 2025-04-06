@@ -18,9 +18,9 @@ public class PlayerActions : MonoBehaviour
     public GameObject interactableIndicatorPrefab;
     public ItemBehavior closestItem = null;
 
-    public float range = 5;
-    public float indicatorRange = 2;
     public float pickUpRange = 1;
+    //public float indicatorRange = 2;
+    //public float pickUpRange = 1;
     public float refreshCooldown = 0.1f;
     private float refreshTimer = 0;
     public LayerMask itemLayerMask;
@@ -118,7 +118,7 @@ public class PlayerActions : MonoBehaviour
         ItemBehavior bestItem = null;
         float closestDistance = Mathf.Infinity;
 
-        Collider2D[] nearbyItems = Physics2D.OverlapCircleAll(transform.position, range, itemLayerMask);
+        Collider2D[] nearbyItems = Physics2D.OverlapCircleAll(transform.position, pickUpRange, itemLayerMask);
 
         if (nearbyItems.Length > 0)
         {
