@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     InputAction jumpInput;
 
     bool jumpPressed = false;
+    bool doJump = false;
     bool grounded = false;
 
     [SerializeField] LayerMask groundingLayerMask;
@@ -20,11 +21,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float acceleration = 20;
     [SerializeField] float deceleration = 40;
     [SerializeField] float jumpHeight = 10;
+    [SerializeField] float extraDownGravity = 2;
+    [SerializeField] float downDampening = 2;
     float gravity;
 
     SpriteRenderer rbSprite;
 
     public GameObject headLight;
+    public Transform lightPos1;
+    public Transform lightPos2;
 
     void Start()
     {
@@ -43,25 +48,32 @@ public class PlayerMovement : MonoBehaviour
         if (horizontalMovement > 0)
         {
             rbSprite.flipX = false;
-            headLight.transform.localPosition = new Vector3(0.25f, 0.33f, 0);
+            //headLight.transform.localPosition = new Vector3(0.25f, 0.33f, 0);
+            headLight.transform.localPosition = lightPos1.localPosition;
         }
         else if (horizontalMovement < 0)
         {
             rbSprite.flipX = true;
-            headLight.transform.localPosition = new Vector3(-0.25f, 0.33f, 0);
+            //headLight.transform.localPosition = new Vector3(-0.25f, 0.33f, 0);
+            headLight.transform.localPosition = lightPos2.localPosition;
         }
 
         if (jumpInput.WasPressedThisFrame()) // Make buffer, sets to false after a time
         {
             jumpPressed = true;
+            doJump = true;
+        }
+
+        if (jumpInput.WasReleasedThisFrame())
+        {
+            jumpPressed = false;
+            // Lerp gravity scale
         }
     }
 
     private void FixedUpdate()
     {
         grounded = col.IsTouchingLayers(groundingLayerMask);
-
-
 
         if (horizontalMovement != 0)
         {
@@ -72,17 +84,17 @@ public class PlayerMovement : MonoBehaviour
             rb.linearVelocityX = Mathf.MoveTowards(rb.linearVelocityX, 0, deceleration * Time.deltaTime);
         }
 
-        if (grounded && jumpPressed)
+        if (grounded && doJump)
         {
-            jumpPressed = false;
+            doJump = false;
             Jump(jumpHeight);
             // Need extra downforce when release jump
+
+            if (!jumpPressed)
+            {
+                rb.gravityScale = Mathf.Lerp(rb.gravityScale, extraDownGravity, downDampening * Time.fixedDeltaTime);
+            }
         }
-    }
-
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-
     }
 
     void Jump(float height)

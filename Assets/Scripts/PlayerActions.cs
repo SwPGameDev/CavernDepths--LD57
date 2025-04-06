@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Collections.Generic;
 
 public class PlayerActions : MonoBehaviour
 {
@@ -10,17 +9,24 @@ public class PlayerActions : MonoBehaviour
 
     public ItemHolder itemHolder;
     public ItemBehavior heldItem;
+    private Camera cam;
 
+    [Header("Interact")]
     public GameObject interactButton;
+
     public float interactYOffset;
     public GameObject interactableIndicatorPrefab;
-    public GameObject sphereOfInfluence;
     public ItemBehavior closestItem = null;
+
     public float range = 5;
     public float indicatorRange = 2;
     public float pickUpRange = 1;
+    public float refreshCooldown = 0.1f;
+    private float refreshTimer = 0;
+    public LayerMask itemLayerMask;
 
-    private Camera cam;
+    [Header("Throw")]
+    public float throwForce = 10;
 
     private void Start()
     {
@@ -33,6 +39,17 @@ public class PlayerActions : MonoBehaviour
 
     private void Update()
     {
+        // INTERACT
+        if (refreshTimer > refreshCooldown)
+        {
+            refreshTimer = 0;
+            closestItem = GetClosestItem();
+        }
+        else
+        {
+            refreshTimer += Time.deltaTime;
+        }
+
         // USE ITEM
         if (leftClick.WasPressedThisFrame())
         {
@@ -85,11 +102,41 @@ public class PlayerActions : MonoBehaviour
 
                 interactButton.transform.position = cam.WorldToScreenPoint(offsetPos);
             }
+            else
+            {
+                interactButton.SetActive(false);
+            }
         }
         else
         {
             interactButton.SetActive(false);
         }
+    }
+
+    private ItemBehavior GetClosestItem()
+    {
+        ItemBehavior bestItem = null;
+        float closestDistance = Mathf.Infinity;
+
+        Collider2D[] nearbyItems = Physics2D.OverlapCircleAll(transform.position, range, itemLayerMask);
+
+        if (nearbyItems.Length > 0)
+        {
+            foreach (Collider2D item in nearbyItems)
+            {
+                Debug.DrawLine(transform.position, item.transform.position, Color.yellow, refreshCooldown);
+
+
+                float distanceToItem = (item.transform.position - transform.position).magnitude;
+                if (distanceToItem < closestDistance)
+                {
+                    closestDistance = distanceToItem;
+                    bestItem = item.GetComponent<ItemBehavior>();
+                }
+            }
+        }
+
+        return bestItem;
     }
 
     private void OnDrawGizmos()

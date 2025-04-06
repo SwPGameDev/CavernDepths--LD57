@@ -21,16 +21,19 @@ public class ItemHolder : MonoBehaviour
 
     private void Update()
     {
-        float dot = Vector2.Dot(player.transform.right, (heldItem.transform.position - player.transform.position).normalized);
-        if (dot > 0)
+        if (heldItem)
         {
-            itemSprite.flipY = false;
-            //heldItem.transform.rotation = Quaternion.Euler(heldItem.transform.rotation.eulerAngles.x, 0, heldItem.transform.rotation.eulerAngles.z);
-        }
-        else
-        {
-            itemSprite.flipY = true;
-            //heldItem.transform.rotation = Quaternion.Euler(heldItem.transform.rotation.eulerAngles.x, 180, heldItem.transform.rotation.eulerAngles.z);
+            float dot = Vector2.Dot(player.transform.right, (heldItem.transform.position - player.transform.position).normalized);
+            if (dot > 0)
+            {
+                itemSprite.flipY = false;
+                //heldItem.transform.rotation = Quaternion.Euler(heldItem.transform.rotation.eulerAngles.x, 0, heldItem.transform.rotation.eulerAngles.z);
+            }
+            else
+            {
+                itemSprite.flipY = true;
+                //heldItem.transform.rotation = Quaternion.Euler(heldItem.transform.rotation.eulerAngles.x, 180, heldItem.transform.rotation.eulerAngles.z);
+            }
         }
     }
 

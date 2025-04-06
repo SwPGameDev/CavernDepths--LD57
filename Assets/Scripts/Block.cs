@@ -10,14 +10,12 @@ public class Block : MonoBehaviour
     public float ouchyTickTime = 0.25f;
     public float ouchyTimer = 0;
 
+    // Drop loot chance
+    // Drop loot table
+
     void Start()
     {
         currentHitPoints = maxHitPoints;
-    }
-
-    void Update()
-    {
-        
     }
 
     public void TakeHit(float damage)
@@ -31,7 +29,7 @@ public class Block : MonoBehaviour
 
     void Die()
     {
-        DropFromTable();
+        DropLoot();
         Destroy(gameObject);
     }
 
@@ -60,7 +58,7 @@ public class Block : MonoBehaviour
         }
     }
 
-    void DropFromTable()
+    void DropLoot()
     {
 
     }

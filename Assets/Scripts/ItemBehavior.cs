@@ -100,8 +100,13 @@ public class ItemBehavior : MonoBehaviour
     public void Pickup(GameObject holder)
     {
         Debug.Log("Holder: " + holder.name + " Pickup: " + gameObject.name);
+
+        held = true;
         col.isTrigger = true;
+        rb.linearVelocity = Vector3.zero;
         rb.bodyType = RigidbodyType2D.Kinematic;
+
+        gameObject.layer = 0; // 0 is default
         transform.parent = holder.transform;
         transform.localPosition = Vector3.zero;
     }
@@ -109,9 +114,12 @@ public class ItemBehavior : MonoBehaviour
     public void Drop()
     {
         Debug.Log("DROP: " + gameObject.name);
+
+        held = false;
         col.isTrigger = false;
         col.enabled = true;
         rb.bodyType = RigidbodyType2D.Dynamic;
+        gameObject.layer = 8; // 8 is item
         transform.parent = null;
     }
 
