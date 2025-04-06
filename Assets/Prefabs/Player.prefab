@@ -156,14 +156,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d37dcf5a109edbc4a987582047eaf089, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemHolder: {fileID: 7838684673948338503}
+  itemHolder: {fileID: 0}
   heldItem: {fileID: 0}
   interactButton: {fileID: 0}
   interactYOffset: 1
   interactableIndicatorPrefab: {fileID: 0}
   closestItem: {fileID: 0}
-  range: 5
-  indicatorRange: 2
   pickUpRange: 1
   refreshCooldown: 0.1
   itemLayerMask:
@@ -182,13 +180,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 115e6744777eb8e45be8f19d1f52c986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  customMass: 10
   speed: 7.5
   acceleration: 60
   deceleration: 80
   jumpHeight: 2.5
-  extraDownGravity: 4
-  downDampening: 2
-  gravity: 1
+  extraDownGravity: 5
+  downDampening: 5
+  customGravityScale: 1
   groundingLayerMask:
     serializedVersion: 2
     m_Bits: 137
@@ -383,7 +382,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8231416476838128200}
-  - component: {fileID: 7838684673948338503}
   m_Layer: 0
   m_Name: ItemHolder
   m_TagString: Untagged
@@ -406,21 +404,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2224759913210247999}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
---- !u!114 &7838684673948338503
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4018606137534212079}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8193d6b247a3dd24c8b28d0554b5bf3f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1599245555533677450}
-  playerActions: {fileID: 5083031237458363828}
-  heldItem: {fileID: 0}
 --- !u!1 &5849922579225967052
 GameObject:
   m_ObjectHideFlags: 0

@@ -79,7 +79,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 6025539f54e19e14189a7f9d86351bfe, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -106,6 +106,14 @@ MonoBehaviour:
   ItemType: 1
   useCooldown: 0.25
   damage: 1
+  maxAmmoCount: 1
+  reloadCooldown: 0.75
+  projectileVelocity: 10
+  casingVelocity: 5
+  projectilePrefab: {fileID: 0}
+  casingPrefab: {fileID: 0}
+  muzzle: {fileID: 0}
+  ejector: {fileID: 0}
 --- !u!95 &8811093894590883889
 Animator:
   serializedVersion: 7

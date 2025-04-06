@@ -7,7 +7,7 @@ public class PlayerActions : MonoBehaviour
     private InputAction rightClick;
     private InputAction interactAction;
 
-    public ItemHolder itemHolder;
+    public Transform itemHolder;
     public ItemBehavior heldItem;
     private Camera cam;
 
@@ -15,7 +15,7 @@ public class PlayerActions : MonoBehaviour
     public GameObject interactButton;
 
     public float interactYOffset;
-    public GameObject interactableIndicatorPrefab;
+    //public GameObject interactableIndicatorPrefab;
     public ItemBehavior closestItem = null;
 
     public float pickUpRange = 1;
@@ -76,16 +76,14 @@ public class PlayerActions : MonoBehaviour
                 // Get closest item if in range
                 if (closestItem)
                 {
-                    closestItem.Pickup(itemHolder.gameObject);
+                    closestItem.Pickup(gameObject, itemHolder.gameObject);
                     heldItem = closestItem;
-                    itemHolder.NewHeldItem(heldItem);
                 }
             }
             else
             {
                 heldItem.Drop();
                 heldItem = null;
-                itemHolder.ClearHeldItem();
             }
         }
     }
