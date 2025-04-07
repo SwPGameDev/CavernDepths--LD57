@@ -109,9 +109,10 @@ MonoBehaviour:
   useCooldown: 0.35
   damage: 2
   mass: 5
+  FacingRight: 1
   maxAmmoCount: 8
   reloadCooldown: 0.75
-  projectileVelocity: 10
+  projectileVelocity: 30
   casingVelocity: 5
   projectilePrefab: {fileID: 2731342488646363440, guid: 0c2e3b7af473c4c4c9719d0a0d1ff49a, type: 3}
   casingPrefab: {fileID: 4765879635055548372, guid: 1704ec72e9dc6d940a719a7f06cec8ac, type: 3}

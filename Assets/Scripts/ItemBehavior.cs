@@ -53,7 +53,7 @@ public class ItemBehavior : MonoBehaviour
     private Collider2D col;
     private Rigidbody2D rb;
 
-    SpriteRenderer sr;
+    private SpriteRenderer sr;
 
     private Dictionary<Collider2D, bool> hitDict = new Dictionary<Collider2D, bool>();
 
@@ -94,7 +94,6 @@ public class ItemBehavior : MonoBehaviour
                 }
             }
 
-
             float dot = Vector2.Dot(owner.transform.right, (transform.position - owner.transform.position).normalized);
             if (dot > 0)
             {
@@ -106,7 +105,6 @@ public class ItemBehavior : MonoBehaviour
                 FacingRight = false;
                 sr.flipY = true;
             }
-
         }
     }
 
@@ -214,7 +212,7 @@ public class ItemBehavior : MonoBehaviour
         rb.linearVelocity = Vector3.zero;
         rb.bodyType = RigidbodyType2D.Kinematic;
 
-        gameObject.layer = 0; // 0 is default
+        gameObject.layer = 11; // 11 is holding
         transform.parent = parentTransform.transform;
         transform.localPosition = Vector3.zero;
     }
@@ -243,7 +241,6 @@ public class ItemBehavior : MonoBehaviour
         hitDict = new Dictionary<Collider2D, bool>();
     }
 
-
     private void OnDrawGizmos()
     {
         if (held && ItemType == ItemTypes.Gun)
@@ -264,7 +261,6 @@ public class ItemBehavior : MonoBehaviour
                 Ray two = new Ray(ejector.position, ejector.up * -1 * casingVelocity);
                 Gizmos.DrawRay(two);
             }
-
         }
     }
 }

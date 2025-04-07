@@ -3,19 +3,32 @@ using UnityEngine.SceneManagement;
 
 public class PlayerBehavior : MonoBehaviour
 {
+    private static PlayerBehavior _instance;
+
+    public static PlayerBehavior Instance
+    {
+        get
+        {
+            if (_instance == null)
+                Debug.LogError("PlayerBehavior is null");
+            return _instance;
+        }
+    }
+
+
     [SerializeField] float maxHitPoints = 5;
     public float currentHitPoints;
-    
+
+
+    private void Awake()
+    {
+        _instance = this;
+    }
+
     void Start()
     {
         currentHitPoints = maxHitPoints;
     }
-
-    void Update()
-    {
-        
-    }
-
 
     public void TakeHit(float damage)
     {
