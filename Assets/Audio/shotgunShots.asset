@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1233149941 &-8218079773757001912
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_Gun_Generic_B_Shoot_1_{-8218079773757001912}
+  m_AudioClip: {fileID: 8300000, guid: 01ecc9f7d2698aa41b9eebea9cf058c0, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &-2879281050105128200
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_Gun_Generic_B_Shoot_3_{-2879281050105128200}
+  m_AudioClip: {fileID: 8300000, guid: d22a2df2e0c076f41aba4e691ad8cea9, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &3391799002365130349
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_Gun_Generic_B_Shoot_2_{3391799002365130349}
+  m_AudioClip: {fileID: 8300000, guid: 3eda2027d36d44b46ad94af34a588b83, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1307931743 &6418180475301049370
+AudioRandomContainer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: shotgunShots
+  m_Volume: 0
+  m_Pitch: 0
+  m_AutomaticTriggerTime: 0
+  m_LoopCount: 1
+  m_VolumeRandomizationRange: {x: -1.7910433, y: 1.7910385}
+  m_PitchRandomizationRange: {x: -44.77608, y: 44.776154}
+  m_AutomaticTriggerTimeRandomizationRange: {x: 0, y: 0}
+  m_LoopCountRandomizationRange: {x: 0, y: 0}
+  m_Elements:
+  - {fileID: -8218079773757001912}
+  - {fileID: 3391799002365130349}
+  - {fileID: -2879281050105128200}
+  m_AvoidRepeatingLast: 0
+  m_PlaybackMode: 1
+  m_TriggerMode: 0
+  m_AutomaticTriggerMode: 1
+  m_LoopMode: 2
+  m_VolumeRandomizationEnabled: 1
+  m_PitchRandomizationEnabled: 1
+  m_AutomaticTriggerTimeRandomizationEnabled: 0
+  m_LoopCountRandomizationEnabled: 0

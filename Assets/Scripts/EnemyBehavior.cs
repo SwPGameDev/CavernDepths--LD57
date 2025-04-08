@@ -7,17 +7,24 @@ public class EnemyBehavior : MonoBehaviour
     float currentHP;
     bool alive = true;
 
+    [Header("Pathing")]
+    [SerializeField] float idleCooldown = 3;
+    float idleTimer = 0;
+    public int lateralMovementDirection = 0;
+    // Raycasts for walls/gaps
+
     [Header("Movement")]
     [SerializeField] float aggroRange = 5;
     [SerializeField] float mass = 3;
     [SerializeField] float speed = 5;
+    [SerializeField] float idleSpeed = 2;
     [SerializeField] float acceleration = 5;
     [SerializeField] float deceleration = 5;
     [SerializeField] float leapForce = 10;
     [SerializeField] float jumpHeight = 3;
 
     Vector2 currentPos;
-    Vector2 currentMovementVector;
+    Vector2 currentMovementDirection;
     GameObject target;
     float distanceToTarget;
     PlayerBehavior playerBehavior;
@@ -55,19 +62,64 @@ public class EnemyBehavior : MonoBehaviour
     {
         currentPos = transform.position;
         distanceToTarget = Vector2.Distance(transform.position, target.transform.position);
-        currentMovementVector = rb.linearVelocity + currentPos;
+        currentMovementDirection = rb.linearVelocity.normalized + currentPos;
 
-        float dot = Vector2.Dot(transform.right, currentMovementVector.normalized);
-        if (dot > 0)
+        if (aggro)
+        {
+            float targetDot = Vector2.Dot(transform.right, target.transform.position.normalized);
+            if (targetDot > 0)
+            {
+                lateralMovementDirection = 1;
+            }
+            else
+            {
+                lateralMovementDirection = -1;
+            }
+
+
+            // leap timer
+        }
+        else
+        {
+            if (idleTimer > idleCooldown)
+            {
+                idleTimer = 0;
+                NewIdleAction();
+            }
+            else
+            {
+                idleTimer += Time.deltaTime;
+            }
+
+            // Look for void in floor
+        }
+
+
+        float movementDot = Vector2.Dot(transform.right, currentMovementDirection);
+        if (movementDot > 0)
         {
             facingRight = true;
-            sr.flipY = false;
+            sr.flipX = false;
         }
         else
         {
             facingRight = false;
-            sr.flipY = true;
+            sr.flipX = true;
         }
+
+
+        if (distanceToTarget < aggroRange)
+        {
+            if (!aggro)
+            {
+                aggro = true;
+                // Active aggro
+                // Sounds
+            }
+        }
+
+
+
 
     }
 
@@ -75,20 +127,17 @@ public class EnemyBehavior : MonoBehaviour
     {
         grounded = col.IsTouchingLayers(groundingLayerMask);
 
-        //if (horizontalMovement != 0)
-        //{
-        //    rb.linearVelocityX = Mathf.MoveTowards(rb.linearVelocityX, speed * horizontalMovement, acceleration * Time.fixedDeltaTime);
-        //}
-        //else
-        //{
-        //    rb.linearVelocityX = Mathf.MoveTowards(rb.linearVelocityX, 0, deceleration * Time.fixedDeltaTime);
-        //}
-
-        // MoveLeft
-        // MoveRight
-        // Jump(jumpHeight);
-        // JumpAtTarget();
+        // Move
+        rb.linearVelocityX = Mathf.MoveTowards(rb.linearVelocityX, lateralMovementDirection * speed, acceleration * Time.fixedDeltaTime);
+        
     }
+
+
+    void NewIdleAction()
+    {
+        lateralMovementDirection = Random.Range(-1, 2);
+    }
+
 
     void Jump(float height)
     {
@@ -116,12 +165,26 @@ public class EnemyBehavior : MonoBehaviour
     void Die()
     {
         alive = false;
+
+        //sr.sprite = deadSprite;
+        sr.flipY = true;
+        gameObject.layer = 10;
     }
 
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, currentMovementVector);
+        if (aggro)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(transform.position, target.transform.position);
+        }
+
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(transform.position, transform.position + transform.right);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(transform.position, currentMovementDirection);
     }
 }

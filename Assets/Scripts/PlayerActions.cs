@@ -13,11 +13,9 @@ public class PlayerActions : MonoBehaviour
 
     [Header("Interact")]
     public GameObject interactButton;
-
     public float interactYOffset;
     //public GameObject interactableIndicatorPrefab;
     public ItemBehavior closestItem = null;
-
     public float pickUpRange = 1;
     //public float indicatorRange = 2;
     //public float pickUpRange = 1;
@@ -25,8 +23,17 @@ public class PlayerActions : MonoBehaviour
     private float refreshTimer = 0;
     public LayerMask itemLayerMask;
 
+    [Header("Item Holder")]
+    public float rotationItemHolderSpeed = 60;
+    private Vector2 mousePos;
+    Vector2 currentItemHolderPos;
+    Vector2 rotateItemDirection;
+
+    
+
+
     [Header("Throw")]
-    public float throwForce = 10;
+    public float throwStrength = 10;
 
     private void Start()
     {
@@ -39,6 +46,15 @@ public class PlayerActions : MonoBehaviour
 
     private void Update()
     {
+        // Rotate Item Holder
+        mousePos = cam.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        currentItemHolderPos = new Vector2(itemHolder.position.x, itemHolder.position.y);
+        rotateItemDirection = (mousePos - currentItemHolderPos).normalized;
+        float angle = Mathf.Atan2(rotateItemDirection.y, rotateItemDirection.x) * Mathf.Rad2Deg - 90f;
+        itemHolder.rotation = Quaternion.Slerp(itemHolder.rotation, Quaternion.AngleAxis(angle, Vector3.forward), rotationItemHolderSpeed * Time.deltaTime);
+
+
+
         // INTERACT
         if (refreshTimer > refreshCooldown)
         {
@@ -64,7 +80,10 @@ public class PlayerActions : MonoBehaviour
         if (rightClick.WasPressedThisFrame())
         {
             Debug.Log("RIGHT CLICK");
-            // Throw item
+            if (heldItem)
+            {
+                heldItem.Throw(mousePos, throwStrength);
+            }
         }
 
         // PICKUP OR DROP
@@ -139,5 +158,7 @@ public class PlayerActions : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(mousePos, 0.25f);
     }
 }

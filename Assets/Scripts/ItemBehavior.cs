@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class ItemBehavior : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class ItemBehavior : MonoBehaviour
     private GameObject owner = null;
 
     // STATS
+    [Header("General Stats")]
     public float useCooldown = 0.25f;
 
     private float useTimer = 0f;
@@ -28,8 +30,8 @@ public class ItemBehavior : MonoBehaviour
     public bool FacingRight = true;
 
     // GUN
+    [Header("Gun")]
     public int maxAmmoCount = 1;
-
     private int currentAmmo;
     private bool reloading = false;
     public float reloadCooldown = 0.75f;
@@ -40,12 +42,33 @@ public class ItemBehavior : MonoBehaviour
     [SerializeField] private GameObject casingPrefab;
     [SerializeField] private Transform muzzle;
     [SerializeField] private Transform ejector;
+    [SerializeField] GameObject muzzleFlash;
+    [SerializeField] private float muzzleFlashCooldown = 0.05f;
+    float muzzleFlashTimer = 0;
+
 
     // Bomb
-    // explosive damage
-    // radius
-    // fuse timer
-    // sticky
+    [Header("Bomb")]
+    public float explosionRadius = 2;
+    public float fuseDelay = 1.5f;
+    public GameObject fuse;
+    float fuseTimer = 0;
+    bool fuseLit = false;
+    public bool sticky = false;
+
+
+
+    // Audio
+    [Header("Audio")]
+    [SerializeField] AudioResource useSuccessSound;
+    [SerializeField] AudioResource useFailSound;
+    [SerializeField] AudioResource reloadStart;
+    [SerializeField] AudioResource reloadEnd;
+    [SerializeField] AudioResource fuseSound;
+    [SerializeField] AudioResource explosionSound;
+    AudioSource audioSource;
+
+
 
     //
     private Animator anim;
@@ -65,6 +88,7 @@ public class ItemBehavior : MonoBehaviour
         rb.mass = mass;
 
         sr = GetComponent<SpriteRenderer>();
+        audioSource = GetComponent<AudioSource>();
 
         currentAmmo = maxAmmoCount;
     }
@@ -104,6 +128,30 @@ public class ItemBehavior : MonoBehaviour
             {
                 FacingRight = false;
                 sr.flipY = true;
+            }
+        }
+
+        if (ItemType == ItemTypes.Gun && muzzleFlash.activeInHierarchy)
+        {
+            muzzleFlashTimer += Time.deltaTime;
+            if (muzzleFlashTimer > muzzleFlashCooldown)
+            {
+                muzzleFlashTimer = 0f;
+                muzzleFlash.SetActive(false);
+            }
+        }
+
+
+
+        if (fuseLit)
+        {
+            if (fuseTimer > fuseDelay)
+            {
+                Explode();
+            }
+            else
+            {
+                fuseTimer += Time.deltaTime;
             }
         }
     }
@@ -149,24 +197,84 @@ public class ItemBehavior : MonoBehaviour
                     }
                     else
                     {
-                        reloading = true;
-                        reloadTimer = 0f;
+                        UseFail();
+
+                        if (!reloading)
+                        {
+                            reloading = true;
+                            reloadTimer = 0f;
+                        }
                     }
 
                     break;
 
                 case ItemTypes.Bomb:
-                    //anim.SetTrigger("light");
-                    //LightFuse();
+                    if (!fuseLit)
+                    {
+                        //anim.SetTrigger("light");
+                        LightFuse();
+                    }
                     break;
             }
 
             canUse = false;
         }
+        else
+        {
+            UseFail();
+        }
+    }
+
+    void UseFail()
+    {
+        audioSource.resource = useFailSound;
+        audioSource.loop = false;
+        audioSource.Play();
+    }
+
+    void LightFuse()
+    {
+        if (!fuseLit)
+        {
+            audioSource.resource = fuseSound;
+            audioSource.loop = true;
+            audioSource.Play();
+            fuse.SetActive(true);
+            fuseLit = true;
+        }
+    }
+
+    void Explode()
+    {
+        Debug.Log("BOOM");
+        // Explosion sound
+        audioSource.resource = explosionSound;
+        audioSource.loop = false;
+        audioSource.Play();
+
+        // Effects
+        fuse.SetActive(false);
+        fuseLit = false;
+        //explosion effects
+
+
+        // Circle cast
+        // foreach
+        //  collider try component
+        //  do damage
+        //  explosive force
     }
 
     private void Shoot()
     {
+        // Play Audio
+        audioSource.resource = useSuccessSound;
+        audioSource.Play();
+
+
+        // Muzzle Flash
+        muzzleFlash.SetActive(true);
+
         // Spawn bullet
         currentAmmo--;
 
@@ -197,9 +305,10 @@ public class ItemBehavior : MonoBehaviour
         Destroy(spawnedCasing, 2);
     }
 
-    public void Throw()
+    public void Throw(Vector2 targetPos, float throwStrength)
     {
         Debug.Log("THROW: " + gameObject.name);
+        // Throw wahoo
     }
 
     public void Pickup(GameObject ownerParam, GameObject parentTransform)
@@ -214,7 +323,7 @@ public class ItemBehavior : MonoBehaviour
 
         gameObject.layer = 11; // 11 is holding
         transform.parent = parentTransform.transform;
-        transform.localPosition = Vector3.zero;
+        transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
     }
 
     public void Drop()

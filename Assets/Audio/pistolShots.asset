@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1233149941 &-8104077036068141481
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_Gun_Generic_A_Shoot_1_{-8104077036068141481}
+  m_AudioClip: {fileID: 8300000, guid: 626b81e55db3cf54e87f630b1d5d8cd2, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &472854216032170255
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_Gun_Generic_A_Shoot_2_{472854216032170255}
+  m_AudioClip: {fileID: 8300000, guid: cbaa630497824e0499272dc832a53d71, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &2744402479279289743
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_Gun_Generic_A_Shoot_3_{2744402479279289743}
+  m_AudioClip: {fileID: 8300000, guid: 07a498354fa5dfc46a6722b8a11805e5, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1307931743 &6418180475301049370
+AudioRandomContainer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: pistolShots
+  m_Volume: 0
+  m_Pitch: 0
+  m_AutomaticTriggerTime: 0
+  m_LoopCount: 1
+  m_VolumeRandomizationRange: {x: -1.7910433, y: 0.59700966}
+  m_PitchRandomizationRange: {x: -35.820866, y: 26.865862}
+  m_AutomaticTriggerTimeRandomizationRange: {x: 0, y: 0}
+  m_LoopCountRandomizationRange: {x: 0, y: 0}
+  m_Elements:
+  - {fileID: -8104077036068141481}
+  - {fileID: 472854216032170255}
+  - {fileID: 2744402479279289743}
+  m_AvoidRepeatingLast: 0
+  m_PlaybackMode: 1
+  m_TriggerMode: 0
+  m_AutomaticTriggerMode: 1
+  m_LoopMode: 2
+  m_VolumeRandomizationEnabled: 1
+  m_PitchRandomizationEnabled: 1
+  m_AutomaticTriggerTimeRandomizationEnabled: 0
+  m_LoopCountRandomizationEnabled: 0
