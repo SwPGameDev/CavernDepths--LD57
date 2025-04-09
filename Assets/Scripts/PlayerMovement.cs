@@ -30,7 +30,10 @@ public class PlayerMovement : MonoBehaviour
     bool canJump = false;
     bool jumpPressed = false;
     bool doJump = false;
-    bool grounded = false;
+    bool jumping = false;
+    [SerializeField] GroundCheck groundCheck;
+    public bool grounded = false;
+    bool walking = false;
 
     [SerializeField] float jumpCooldown = 0.15f;
     float jumpTimer = 0;
@@ -39,9 +42,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("Audio")]
     [SerializeField] AudioResource walkSound;
     [SerializeField] AudioResource jumpSound;
+    [SerializeField] AudioResource landingSound;
     AudioSource audioSource;
-    [SerializeField] float walkSoundCooldown = 0.4f;
-    float walkSoundTimer = 0;
 
     [Header("Light")]
     public GameObject headLight;
@@ -70,24 +72,15 @@ public class PlayerMovement : MonoBehaviour
         if (horizontalMovement > 0)
         {
             spriteRenderer.flipX = false;
-            //headLight.transform.localPosition = new Vector3(0.25f, 0.33f, 0);
             headLight.transform.localPosition = lightPos1.localPosition;
         }
         else if (horizontalMovement < 0)
         {
             spriteRenderer.flipX = true;
-            //headLight.transform.localPosition = new Vector3(-0.25f, 0.33f, 0);
             headLight.transform.localPosition = lightPos2.localPosition;
         }
 
-        if (jumpInput.WasPressedThisFrame()) // Make buffer, sets to false after a time
-        {
-            if (canJump)
-            {
-                jumpPressed = true;
-                doJump = true;
-            }
-        }
+
 
         if (grounded)
         {
@@ -100,23 +93,52 @@ public class PlayerMovement : MonoBehaviour
                     canJump = true;
                 }
             }
-
-            if (horizontalMovement != 0)
+            if (!jumping)
             {
-                if (walkSoundTimer > walkSoundCooldown)
+                if (horizontalMovement != 0 && !walking)
                 {
-                    walkSoundTimer = 0;
-                    // Play walk sound
                     audioSource.resource = walkSound;
+                    audioSource.loop = true;
                     audioSource.Play();
+                    walking = true;
                 }
-                else
+                else if (horizontalMovement == 0 && walking)
                 {
-                    walkSoundTimer += Time.deltaTime;
+                    audioSource.loop = false;
+                    audioSource.Stop();
+                    walking = false;
                 }
             }
 
+        }
+        if (!grounded)
+        {
+            if (walking)
+            {
+                walking = false;
+                audioSource.loop = false;
+            }
+            canJump = false;
+        }
 
+        if (jumpInput.WasPressedThisFrame())
+        {
+            jumpPressed = true;
+
+            if (canJump)
+            {
+                doJump = true;
+                canJump = false;
+                jumping = true;
+
+                audioSource.Stop();
+                audioSource.loop = false;
+                audioSource.resource = jumpSound;
+                audioSource.Play();
+                walking = false;
+                grounded = false;
+                Physics2D.SyncTransforms();
+            }
         }
 
 
@@ -129,7 +151,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // grounded = groundCheck.grounded; // Better method but needs Tilemap collision
         grounded = col.IsTouchingLayers(groundingLayerMask);
+
 
         if (horizontalMovement != 0)
         {
@@ -140,16 +164,26 @@ public class PlayerMovement : MonoBehaviour
             rb.linearVelocityX = Mathf.MoveTowards(rb.linearVelocityX, 0, deceleration * Time.fixedDeltaTime);
         }
 
+
+
+
         if (grounded)
         {
-            rb.gravityScale = customGravityScale;
+            if (canJump && jumping)
+            {
+                jumping = false;
+            }
+
+
+            if (rb.gravityScale != customGravityScale)
+            {
+                rb.gravityScale = customGravityScale;
+            }
 
             if (doJump)
             {
                 Jump(jumpHeight);
             }
-            
-            
         }
         else if (!grounded && !jumpPressed)
         {
@@ -161,11 +195,6 @@ public class PlayerMovement : MonoBehaviour
     {
         doJump = false;
         canJump = false;
-
-        audioSource.resource = jumpSound;
-        audioSource.Play();
-        
-
         float jumpForce = (Mathf.Sqrt(height * gravity * -2)) * rb.mass;
         Debug.Log("JUMP FORCE: " +  jumpForce);
         rb.AddForce(jumpForce * Vector2.up, ForceMode2D.Impulse);

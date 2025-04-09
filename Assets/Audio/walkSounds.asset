@@ -6,8 +6,28 @@ AudioContainerElement:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: testWalk2_{-8592506340325369244}
-  m_AudioClip: {fileID: 8300000, guid: 2b6a642c09ca593458aeb26a77e2ce70, type: 3}
+  m_Name: SFX_Footstep_Cartoon_1_{-8592506340325369244}
+  m_AudioClip: {fileID: 8300000, guid: f7d5081282163a442a4625be4326acbf, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &1869395358268157703
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_Footstep_Cartoon_4_{1869395358268157703}
+  m_AudioClip: {fileID: 8300000, guid: 0a3e18a027493594faeda04adcc57193, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &3494097408311815913
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_Footstep_Cartoon_3_{3494097408311815913}
+  m_AudioClip: {fileID: 8300000, guid: 63b80cba08cb023419d775109668fb06, type: 3}
   m_Volume: 0
   m_Enabled: 1
 --- !u!1307931743 &6418180475301049370
@@ -27,7 +47,10 @@ AudioRandomContainer:
   m_LoopCountRandomizationRange: {x: 0, y: 0}
   m_Elements:
   - {fileID: -8592506340325369244}
-  m_AvoidRepeatingLast: 0
+  - {fileID: 9037619258439110489}
+  - {fileID: 3494097408311815913}
+  - {fileID: 1869395358268157703}
+  m_AvoidRepeatingLast: 1
   m_PlaybackMode: 2
   m_TriggerMode: 0
   m_AutomaticTriggerMode: 1
@@ -36,3 +59,13 @@ AudioRandomContainer:
   m_PitchRandomizationEnabled: 1
   m_AutomaticTriggerTimeRandomizationEnabled: 0
   m_LoopCountRandomizationEnabled: 0
+--- !u!1233149941 &9037619258439110489
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_Footstep_Cartoon_2_{9037619258439110489}
+  m_AudioClip: {fileID: 8300000, guid: 12efecec9a8bbb143abd12530780c195, type: 3}
+  m_Volume: 0
+  m_Enabled: 1

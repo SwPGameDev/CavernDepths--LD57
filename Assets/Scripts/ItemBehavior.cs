@@ -28,6 +28,8 @@ public class ItemBehavior : MonoBehaviour
     [SerializeField] private float mass;
 
     public bool FacingRight = true;
+    Vector2 currentPos;
+    Vector2 throwDirection = Vector2.zero;
 
     // GUN
     [Header("Gun")]
@@ -95,6 +97,7 @@ public class ItemBehavior : MonoBehaviour
 
     private void Update()
     {
+        currentPos = new Vector2(transform.position.x, transform.position.y);
         if (held)
         {
             if (!canUse)
@@ -308,7 +311,12 @@ public class ItemBehavior : MonoBehaviour
     public void Throw(Vector2 targetPos, float throwStrength)
     {
         Debug.Log("THROW: " + gameObject.name);
-        // Throw wahoo
+        currentPos = new Vector2(transform.position.x, transform.position.y);
+        throwDirection = (targetPos - currentPos).normalized;
+
+        Drop();
+
+        rb.AddForce(throwDirection * throwStrength, ForceMode2D.Impulse);
     }
 
     public void Pickup(GameObject ownerParam, GameObject parentTransform)
@@ -330,6 +338,7 @@ public class ItemBehavior : MonoBehaviour
     {
         Debug.Log("DROP: " + gameObject.name);
 
+        sr.flipY = false;
         held = false;
         owner = null;
         col.isTrigger = false;
@@ -367,9 +376,15 @@ public class ItemBehavior : MonoBehaviour
             else
             {
                 Gizmos.color = Color.yellow;
-                Ray two = new Ray(ejector.position, ejector.up * -1 * casingVelocity);
+                Ray two = new Ray(ejector.position, -1 * casingVelocity * ejector.up);
                 Gizmos.DrawRay(two);
             }
+        }
+
+        if (throwDirection != Vector2.zero)
+        {
+            Gizmos.color = Color.white;
+            Gizmos.DrawLine(currentPos, currentPos + throwDirection);
         }
     }
 }

@@ -8,6 +8,7 @@ public class PlayerActions : MonoBehaviour
     private InputAction interactAction;
 
     public Transform itemHolder;
+    public Transform itemOrbitPoint;
     public ItemBehavior heldItem;
     private Camera cam;
 
@@ -48,10 +49,10 @@ public class PlayerActions : MonoBehaviour
     {
         // Rotate Item Holder
         mousePos = cam.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        currentItemHolderPos = new Vector2(itemHolder.position.x, itemHolder.position.y);
+        currentItemHolderPos = new Vector2(itemOrbitPoint.position.x, itemOrbitPoint.position.y);
         rotateItemDirection = (mousePos - currentItemHolderPos).normalized;
         float angle = Mathf.Atan2(rotateItemDirection.y, rotateItemDirection.x) * Mathf.Rad2Deg - 90f;
-        itemHolder.rotation = Quaternion.Slerp(itemHolder.rotation, Quaternion.AngleAxis(angle, Vector3.forward), rotationItemHolderSpeed * Time.deltaTime);
+        itemOrbitPoint.rotation = Quaternion.Slerp(itemOrbitPoint.rotation, Quaternion.AngleAxis(angle, Vector3.forward), rotationItemHolderSpeed * Time.deltaTime);
 
 
 
