@@ -280,11 +280,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ItemType: 2
-  useCooldown: 0.35
+  useCooldown: 0.01
   damage: 2
   mass: 5
   FacingRight: 1
   maxAmmoCount: 8
+  currentAmmo: 0
   reloadCooldown: 0.75
   projectileVelocity: 30
   casingVelocity: 5
@@ -294,8 +295,12 @@ MonoBehaviour:
   ejector: {fileID: 3529631584100241538}
   muzzleFlash: {fileID: 4829666212473160234}
   muzzleFlashCooldown: 0.05
+  shotgun: 0
+  pellets: 1
+  spreadAngle: 3
   explosionRadius: 2
   fuseDelay: 1.5
+  fuse: {fileID: 0}
   sticky: 0
   useSuccessSound: {fileID: 6418180475301049370, guid: 9d38d5bb4212ac1439fa6ef1cd62293d, type: 2}
   useFailSound: {fileID: 8300000, guid: 0210a0f8672ca024f9c641ee50ce322f, type: 3}

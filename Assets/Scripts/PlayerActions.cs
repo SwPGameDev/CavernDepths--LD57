@@ -56,7 +56,7 @@ public class PlayerActions : MonoBehaviour
 
 
 
-        // INTERACT
+        // INTERACT BUTTON
         if (refreshTimer > refreshCooldown)
         {
             refreshTimer = 0;
@@ -84,6 +84,7 @@ public class PlayerActions : MonoBehaviour
             if (heldItem)
             {
                 heldItem.Throw(mousePos, throwStrength);
+                heldItem = null;
             }
         }
 

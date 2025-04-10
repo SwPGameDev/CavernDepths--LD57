@@ -34,7 +34,7 @@ public class ItemBehavior : MonoBehaviour
     // GUN
     [Header("Gun")]
     public int maxAmmoCount = 1;
-    private int currentAmmo;
+    public int currentAmmo;
     private bool reloading = false;
     public float reloadCooldown = 0.75f;
     private float reloadTimer = 0f;
@@ -46,6 +46,9 @@ public class ItemBehavior : MonoBehaviour
     [SerializeField] private Transform ejector;
     [SerializeField] GameObject muzzleFlash;
     [SerializeField] private float muzzleFlashCooldown = 0.05f;
+    [SerializeField] bool shotgun = false;
+    [SerializeField] int extraPellets = 1;
+    [SerializeField] float spreadAngle = 3;
     float muzzleFlashTimer = 0;
 
 
@@ -278,15 +281,60 @@ public class ItemBehavior : MonoBehaviour
         // Muzzle Flash
         muzzleFlash.SetActive(true);
 
-        // Spawn bullet
-        currentAmmo--;
 
-        GameObject spawnedProjectile = Instantiate(projectilePrefab, muzzle.position, muzzle.rotation);
+        // if shotgun
+        if (shotgun)
+        {
+            Vector2 projectileVector = (muzzle.position - ejector.position).normalized * projectileVelocity;
 
-        Vector2 projectileVector = (muzzle.position - ejector.position).normalized * projectileVelocity;
+            GameObject spawnedProjectile = Instantiate(projectilePrefab, muzzle.position, muzzle.rotation);
+            spawnedProjectile.name = "Center";
+            spawnedProjectile.GetComponent<Rigidbody2D>().AddForce(projectileVector, ForceMode2D.Impulse);
+            spawnedProjectile.GetComponent<ProjectileBehavior>().SetDamage(damage);
 
-        spawnedProjectile.GetComponent<Rigidbody2D>().AddForce(projectileVector, ForceMode2D.Impulse);
-        spawnedProjectile.GetComponent<ProjectileBehavior>().SetDamage(damage);
+
+            Vector2 lastVector = projectileVector;
+
+            // Going up
+            for (int i = 0; i < (extraPellets / 2); i++)
+            {
+                Vector2 newVector = Quaternion.AngleAxis(spreadAngle, Vector2.right) * lastVector;
+                GameObject spawnedPelletTop = Instantiate(projectilePrefab, muzzle.position, muzzle.rotation);
+                spawnedPelletTop.name = "Top" + i;
+
+                spawnedPelletTop.GetComponent<Rigidbody2D>().AddForce(newVector, ForceMode2D.Impulse);
+                spawnedPelletTop.GetComponent<ProjectileBehavior>().SetDamage(damage);
+
+                lastVector = newVector;
+            }
+
+            lastVector = projectileVector;
+            // Going down
+            for (int i = 0; i < (extraPellets / 2); i++)
+            {
+                Vector2 newVector = Quaternion.AngleAxis(-1 * spreadAngle, Vector2.right) * lastVector;
+                GameObject spawnedPelletBottom = Instantiate(projectilePrefab, muzzle.position, muzzle.rotation);
+                spawnedPelletBottom.name = "Bottom" + i;
+
+                spawnedPelletBottom.GetComponent<Rigidbody2D>().AddForce(newVector, ForceMode2D.Impulse);
+                spawnedPelletBottom.GetComponent<ProjectileBehavior>().SetDamage(damage);
+
+                lastVector = newVector;
+            }
+        }
+        else
+        {
+            // Spawn bullet
+            currentAmmo--;
+
+            GameObject spawnedProjectile = Instantiate(projectilePrefab, muzzle.position, muzzle.rotation);
+
+            Vector2 projectileVector = (muzzle.position - ejector.position).normalized * projectileVelocity;
+
+            spawnedProjectile.GetComponent<Rigidbody2D>().AddForce(projectileVector, ForceMode2D.Impulse);
+            spawnedProjectile.GetComponent<ProjectileBehavior>().SetDamage(damage);
+        }
+
 
         // Spawn casing
 
@@ -305,7 +353,13 @@ public class ItemBehavior : MonoBehaviour
 
         spawnedCasing.GetComponent<Rigidbody2D>().AddForce(casingVector, ForceMode2D.Impulse);
         spawnedCasing.GetComponent<Rigidbody2D>().AddTorque(5, ForceMode2D.Impulse);
-        Destroy(spawnedCasing, 2);
+        Destroy(spawnedCasing, 5);
+
+        if (currentAmmo <= 0 && !reloading)
+        {
+            reloading = true;
+            reloadTimer = 0f;
+        }
     }
 
     public void Throw(Vector2 targetPos, float throwStrength)
