@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2981997447634765297
 Transform:
   m_ObjectHideFlags: 0
@@ -25,12 +25,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3858580801455378718}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6612806138375988188}
+  m_Father: {fileID: 5054208197971124019}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5604881884475214310
 MonoBehaviour:
@@ -48,16 +48,16 @@ MonoBehaviour:
   m_LightType: 3
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
-  m_Color: {r: 1, g: 0.77624106, b: 0.42075467, a: 1}
+  m_Color: {r: 0.93207544, g: 0.65433216, b: 0.32886434, a: 1}
   m_Intensity: 2
-  m_LightVolumeIntensity: 1
+  m_LightVolumeIntensity: 0.1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000
+  m_ApplyToSortingLayers: 000000006f91591d09c4cd25c3f94e4df3d1bff1dbb455d58ff49b32
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
-  m_LightOrder: 0
+  m_LightOrder: 1
   m_AlphaBlendOnOverlap: 0
-  m_OverlapOperation: 1
+  m_OverlapOperation: 0
   m_NormalMapDistance: 3
   m_NormalMapQuality: 2
   m_UseNormalMap: 0
@@ -72,8 +72,8 @@ MonoBehaviour:
     m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
-  m_PointLightInnerRadius: 0.72
-  m_PointLightOuterRadius: 2.07
+  m_PointLightInnerRadius: 0
+  m_PointLightOuterRadius: 2
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
   m_ShapeLightParametricRadius: 1
@@ -84,6 +84,68 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!1 &4168214341267426040
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5096861119574745578}
+  m_Layer: 8
+  m_Name: lightPos1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5096861119574745578
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4168214341267426040}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5054208197971124019}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5238876508837939749
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7389587948771282932}
+  m_Layer: 8
+  m_Name: lightPos2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7389587948771282932
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5238876508837939749}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5054208197971124019}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6421763355773243881
 GameObject:
   m_ObjectHideFlags: 0
@@ -109,12 +171,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6421763355773243881}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.325, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2981997447634765297}
+  m_Children: []
   m_Father: {fileID: 5054208197971124019}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2459887860068972557
@@ -158,8 +219,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 849081487
+  m_SortingLayer: 5
   m_SortingOrder: 5
   m_Sprite: {fileID: 21300000, guid: fcf7ce8455cbbff45be4e496944c1925, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -206,7 +267,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2981997447634765297}
   - {fileID: 6612806138375988188}
+  - {fileID: 5096861119574745578}
+  - {fileID: 7389587948771282932}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5455953845009294491
@@ -250,8 +314,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 849081487
+  m_SortingLayer: 5
   m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: 02981d8ea823c684f9351065892c8cea, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -282,6 +346,7 @@ MonoBehaviour:
   mass: 5
   FacingRight: 1
   maxAmmoCount: 1
+  currentAmmo: 0
   reloadCooldown: 0.75
   projectileVelocity: 10
   casingVelocity: 5
@@ -291,16 +356,23 @@ MonoBehaviour:
   ejector: {fileID: 0}
   muzzleFlash: {fileID: 0}
   muzzleFlashCooldown: 0.05
+  shotgun: 0
+  extraPellets: 1
+  spreadAngle: 3
   explosionRadius: 2
   fuseDelay: 1.5
-  fuse: {fileID: 6421763355773243881}
+  fuseDecal: {fileID: 6421763355773243881}
+  fuseLight: {fileID: 3858580801455378718}
   sticky: 0
+  lightPos1: {fileID: 5096861119574745578}
+  lightPos2: {fileID: 7389587948771282932}
   useSuccessSound: {fileID: 8300000, guid: 1a9e834bbede3e7458f5b29d40d101a7, type: 3}
   useFailSound: {fileID: 8300000, guid: 9c32e36befc4e774e91b4700a07af65e, type: 3}
   reloadStart: {fileID: 0}
   reloadEnd: {fileID: 0}
   fuseSound: {fileID: 8300000, guid: e508c3cfc577e8d43b8d7ee54a0c7808, type: 3}
   explosionSound: {fileID: 8300000, guid: 2c7969caa4f73794091b0c229f068dcc, type: 3}
+  hitCollider: {fileID: 0}
 --- !u!82 &-1838503523520061059
 AudioSource:
   m_ObjectHideFlags: 0
@@ -467,7 +539,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 2
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0

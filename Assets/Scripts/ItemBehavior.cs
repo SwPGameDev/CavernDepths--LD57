@@ -3,17 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
-public class ItemBehavior : MonoBehaviour
+public class ItemBehavior : MonoBehaviour, IHoldable
 {
-    public enum ItemTypes
-    {
-        None,
-        Melee,
-        Gun,
-        Bomb
-    }
-
-    public ItemTypes ItemType = ItemTypes.None;
+    public GameObject HoldableObject => gameObject;
+    public HoldableType ItemType;
+    HoldableType IHoldable.ItemType => ItemType;
 
     private bool held = false;
     private GameObject owner = null;
@@ -28,12 +22,13 @@ public class ItemBehavior : MonoBehaviour
     [SerializeField] private float mass;
 
     public bool FacingRight = true;
-    Vector2 currentPos;
-    Vector2 throwDirection = Vector2.zero;
+    private Vector2 currentPos;
+    private Vector2 throwDirection = Vector2.zero;
 
     // GUN
     [Header("Gun")]
     public int maxAmmoCount = 1;
+
     public int currentAmmo;
     private bool reloading = false;
     public float reloadCooldown = 0.75f;
@@ -44,41 +39,45 @@ public class ItemBehavior : MonoBehaviour
     [SerializeField] private GameObject casingPrefab;
     [SerializeField] private Transform muzzle;
     [SerializeField] private Transform ejector;
-    [SerializeField] GameObject muzzleFlash;
+    [SerializeField] private GameObject muzzleFlash;
     [SerializeField] private float muzzleFlashCooldown = 0.05f;
-    [SerializeField] bool shotgun = false;
-    [SerializeField] int extraPellets = 1;
-    [SerializeField] float spreadAngle = 3;
-    float muzzleFlashTimer = 0;
-
+    [SerializeField] private bool shotgun = false;
+    [SerializeField] private int extraPellets = 1;
+    [SerializeField] private float spreadAngle = 3;
+    private float muzzleFlashTimer = 0;
 
     // Bomb
     [Header("Bomb")]
     public float explosionRadius = 2;
+
     public float fuseDelay = 1.5f;
-    public GameObject fuse;
-    float fuseTimer = 0;
-    bool fuseLit = false;
+    public GameObject fuseDecal;
+    public GameObject fuseLight;
+    private float fuseTimer = 0;
+    private bool fuseLit = false;
     public bool sticky = false;
-
-
+    public Transform lightPos1;
+    public Transform lightPos2;
 
     // Audio
     [Header("Audio")]
-    [SerializeField] AudioResource useSuccessSound;
-    [SerializeField] AudioResource useFailSound;
-    [SerializeField] AudioResource reloadStart;
-    [SerializeField] AudioResource reloadEnd;
-    [SerializeField] AudioResource fuseSound;
-    [SerializeField] AudioResource explosionSound;
-    AudioSource audioSource;
+    [SerializeField] private AudioResource useSuccessSound;
 
-
+    [SerializeField] private AudioResource useFailSound;
+    [SerializeField] private AudioResource reloadStart;
+    [SerializeField] private AudioResource reloadEnd;
+    [SerializeField] private AudioResource fuseSound;
+    [SerializeField] private AudioResource explosionSound;
+    private AudioSource audioSource;
 
     //
     private Animator anim;
 
     private Collider2D col;
+
+    [Tooltip("For melee")]
+    public Collider2D hitCollider;
+
     private Rigidbody2D rb;
 
     private SpriteRenderer sr;
@@ -128,16 +127,33 @@ public class ItemBehavior : MonoBehaviour
             if (dot > 0)
             {
                 FacingRight = true;
-                sr.flipY = false;
             }
             else
             {
                 FacingRight = false;
-                sr.flipY = true;
             }
         }
 
-        if (ItemType == ItemTypes.Gun && muzzleFlash.activeInHierarchy)
+        if (FacingRight)
+        {
+            sr.flipY = false;
+            if (fuseDecal || fuseLight)
+            {
+                fuseDecal.GetComponent<SpriteRenderer>().flipY = false;
+                fuseDecal.transform.position = lightPos1.position;
+            }
+        }
+        else
+        {
+            sr.flipY = true;
+            if (fuseDecal || fuseLight)
+            {
+                fuseDecal.GetComponent<SpriteRenderer>().flipY = true;
+                fuseDecal.transform.position = lightPos2.position;
+            }
+        }
+
+        if (ItemType == HoldableType.Gun && muzzleFlash.activeInHierarchy)
         {
             muzzleFlashTimer += Time.deltaTime;
             if (muzzleFlashTimer > muzzleFlashCooldown)
@@ -146,8 +162,6 @@ public class ItemBehavior : MonoBehaviour
                 muzzleFlash.SetActive(false);
             }
         }
-
-
 
         if (fuseLit)
         {
@@ -164,7 +178,7 @@ public class ItemBehavior : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collider)
     {
-        if (ItemType == ItemTypes.Melee)
+        if (ItemType == HoldableType.Melee)
         {
             if (collider.gameObject.layer == 7)
             {
@@ -191,11 +205,11 @@ public class ItemBehavior : MonoBehaviour
         {
             switch (ItemType)
             {
-                case ItemTypes.Melee:
+                case HoldableType.Melee:
                     anim.SetTrigger("swing");
                     break;
 
-                case ItemTypes.Gun:
+                case HoldableType.Gun:
                     //anim.SetTrigger("shoot");
                     if (currentAmmo > 0 && !reloading)
                     {
@@ -214,7 +228,7 @@ public class ItemBehavior : MonoBehaviour
 
                     break;
 
-                case ItemTypes.Bomb:
+                case HoldableType.Bomb:
                     if (!fuseLit)
                     {
                         //anim.SetTrigger("light");
@@ -231,26 +245,27 @@ public class ItemBehavior : MonoBehaviour
         }
     }
 
-    void UseFail()
+    private void UseFail()
     {
         audioSource.resource = useFailSound;
         audioSource.loop = false;
         audioSource.Play();
     }
 
-    void LightFuse()
+    private void LightFuse()
     {
         if (!fuseLit)
         {
             audioSource.resource = fuseSound;
             audioSource.loop = true;
             audioSource.Play();
-            fuse.SetActive(true);
+            fuseDecal.SetActive(true);
+            fuseLight.SetActive(true);
             fuseLit = true;
         }
     }
 
-    void Explode()
+    private void Explode()
     {
         Debug.Log("BOOM");
         // Explosion sound
@@ -259,11 +274,12 @@ public class ItemBehavior : MonoBehaviour
         audioSource.Play();
 
         // Effects
-        fuse.SetActive(false);
+        fuseDecal.SetActive(false);
+        fuseLight.SetActive(false);
         fuseLit = false;
         //explosion effects
 
-
+        Destroy(gameObject, 1);
         // Circle cast
         // foreach
         //  collider try component
@@ -277,21 +293,20 @@ public class ItemBehavior : MonoBehaviour
         audioSource.resource = useSuccessSound;
         audioSource.Play();
 
-
         // Muzzle Flash
         muzzleFlash.SetActive(true);
-
 
         // if shotgun
         if (shotgun)
         {
+            currentAmmo--;
+
             Vector2 projectileVector = (muzzle.position - ejector.position).normalized * projectileVelocity;
 
             GameObject spawnedProjectile = Instantiate(projectilePrefab, muzzle.position, muzzle.rotation);
             spawnedProjectile.name = "Center";
             spawnedProjectile.GetComponent<Rigidbody2D>().AddForce(projectileVector, ForceMode2D.Impulse);
             spawnedProjectile.GetComponent<ProjectileBehavior>().SetDamage(damage);
-
 
             Vector2 lastVector = projectileVector;
 
@@ -334,7 +349,6 @@ public class ItemBehavior : MonoBehaviour
             spawnedProjectile.GetComponent<Rigidbody2D>().AddForce(projectileVector, ForceMode2D.Impulse);
             spawnedProjectile.GetComponent<ProjectileBehavior>().SetDamage(damage);
         }
-
 
         // Spawn casing
 
@@ -381,6 +395,7 @@ public class ItemBehavior : MonoBehaviour
         owner = ownerParam;
         col.isTrigger = true;
         rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = 0;
         rb.bodyType = RigidbodyType2D.Kinematic;
 
         gameObject.layer = 11; // 11 is holding
@@ -405,6 +420,7 @@ public class ItemBehavior : MonoBehaviour
     public void ActivateCollider()
     {
         col.enabled = true;
+        hitDict = new Dictionary<Collider2D, bool>();
     }
 
     public void DeactivateCollider()
@@ -415,7 +431,7 @@ public class ItemBehavior : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (held && ItemType == ItemTypes.Gun)
+        if (held && ItemType == HoldableType.Gun)
         {
             Gizmos.color = Color.green;
             Ray one = new Ray(muzzle.position, (muzzle.position - ejector.position).normalized * projectileVelocity);

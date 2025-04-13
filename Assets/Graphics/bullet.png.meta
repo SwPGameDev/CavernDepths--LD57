@@ -8,14 +8,14 @@ TextureImporter:
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
-    mipMapMode: 0
+    mipMapMode: 1
     enableMipMap: 1
     sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
     borderMipMap: 0
     mipMapsPreserveCoverage: 0
-    alphaTestReferenceValue: 0.5
+    alphaTestReferenceValue: 0
     mipMapFadeDistanceStart: 1
     mipMapFadeDistanceEnd: 3
   bumpmap:
@@ -25,7 +25,7 @@ TextureImporter:
     normalMapFilter: 0
     flipGreenChannel: 0
   isReadable: 0
-  streamingMipmaps: 0
+  streamingMipmaps: 1
   streamingMipmapsPriority: 0
   vTOnly: 0
   ignoreMipmapLimit: 0
@@ -56,7 +56,7 @@ TextureImporter:
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
-  spriteTessellationDetail: -1
+  spriteTessellationDetail: 0
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -134,9 +134,33 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    outline: []
+    outline:
+    - - {x: 2, y: -3}
+      - {x: 3, y: -3}
+      - {x: 3, y: -2}
+      - {x: 4, y: -2}
+      - {x: 4, y: 3}
+      - {x: 3, y: 3}
+      - {x: 3, y: 4}
+      - {x: 2, y: 4}
+      - {x: 2, y: 5}
+      - {x: -5, y: 5}
+      - {x: -5, y: -4}
+      - {x: 2, y: -4}
     customData: 
-    physicsShape: []
+    physicsShape:
+    - - {x: 2, y: -3}
+      - {x: 3, y: -3}
+      - {x: 3, y: -2}
+      - {x: 4, y: -2}
+      - {x: 4, y: 3}
+      - {x: 3, y: 3}
+      - {x: 3, y: 4}
+      - {x: 2, y: 4}
+      - {x: 2, y: 5}
+      - {x: -5, y: 5}
+      - {x: -5, y: -4}
+      - {x: 2, y: -4}
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
     internalID: 1537655665
@@ -144,7 +168,9 @@ TextureImporter:
     indices: 
     edges: []
     weights: []
-    secondaryTextures: []
+    secondaryTextures:
+    - texture: {fileID: 2800000, guid: a7aa86466d35de4409fa9f561b99f9a0, type: 3}
+      name: _Emission
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:

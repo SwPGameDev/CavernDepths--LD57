@@ -16,7 +16,7 @@ public class PlayerBehavior : MonoBehaviour
     }
 
 
-    [SerializeField] float maxHitPoints = 5;
+    public float maxHitPoints = 5;
     public float currentHitPoints;
 
 

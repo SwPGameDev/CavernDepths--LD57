@@ -9,14 +9,14 @@ public class PlayerActions : MonoBehaviour
 
     public Transform itemHolder;
     public Transform itemOrbitPoint;
-    public ItemBehavior heldItem;
+    public IHoldable heldItem;
     private Camera cam;
 
     [Header("Interact")]
     public GameObject interactButton;
     public float interactYOffset;
     //public GameObject interactableIndicatorPrefab;
-    public ItemBehavior closestItem = null;
+    public IHoldable closestHoldable = null;
     public float pickUpRange = 1;
     //public float indicatorRange = 2;
     //public float pickUpRange = 1;
@@ -60,7 +60,7 @@ public class PlayerActions : MonoBehaviour
         if (refreshTimer > refreshCooldown)
         {
             refreshTimer = 0;
-            closestItem = GetClosestItem();
+            closestHoldable = GetClosestItem();
         }
         else
         {
@@ -71,7 +71,7 @@ public class PlayerActions : MonoBehaviour
         if (leftClick.WasPressedThisFrame())
         {
             Debug.Log("LEFT CLICK");
-            if (heldItem)
+            if (heldItem != null)
             {
                 heldItem.TryUse();
             }
@@ -81,7 +81,7 @@ public class PlayerActions : MonoBehaviour
         if (rightClick.WasPressedThisFrame())
         {
             Debug.Log("RIGHT CLICK");
-            if (heldItem)
+            if (heldItem != null)
             {
                 heldItem.Throw(mousePos, throwStrength);
                 heldItem = null;
@@ -92,13 +92,13 @@ public class PlayerActions : MonoBehaviour
         if (interactAction.WasPressedThisFrame())
         {
             Debug.Log("INTERACT");
-            if (!heldItem)
+            if (heldItem == null)
             {
                 // Get closest item if in range
-                if (closestItem)
+                if (closestHoldable != null)
                 {
-                    closestItem.Pickup(gameObject, itemHolder.gameObject);
-                    heldItem = closestItem;
+                    closestHoldable.Pickup(gameObject, itemHolder.gameObject);
+                    heldItem = closestHoldable;
                 }
             }
             else
@@ -111,13 +111,13 @@ public class PlayerActions : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (!heldItem)
+        if (heldItem == null)
         {
             interactButton.SetActive(true);
 
-            if (closestItem)
+            if (closestHoldable != null)
             {
-                Vector3 offsetPos = new Vector3(closestItem.transform.position.x, closestItem.transform.position.y + interactYOffset, 0);
+                Vector3 offsetPos = new Vector3(closestHoldable.HoldableObject.transform.position.x, closestHoldable.HoldableObject.transform.position.y + interactYOffset, 0);
 
                 interactButton.transform.position = cam.WorldToScreenPoint(offsetPos);
             }
@@ -132,9 +132,9 @@ public class PlayerActions : MonoBehaviour
         }
     }
 
-    private ItemBehavior GetClosestItem()
+    private IHoldable GetClosestItem()
     {
-        ItemBehavior bestItem = null;
+        IHoldable bestItem = null;
         float closestDistance = Mathf.Infinity;
 
         Collider2D[] nearbyItems = Physics2D.OverlapCircleAll(transform.position, pickUpRange, itemLayerMask);
@@ -150,7 +150,7 @@ public class PlayerActions : MonoBehaviour
                 if (distanceToItem < closestDistance)
                 {
                     closestDistance = distanceToItem;
-                    bestItem = item.GetComponent<ItemBehavior>();
+                    bestItem = item.GetComponent<IHoldable>();
                 }
             }
         }

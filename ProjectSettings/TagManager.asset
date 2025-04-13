@@ -41,5 +41,23 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 492409199
+    locked: 0
+  - name: Enviroment
+    uniqueID: 634242057
+    locked: 0
+  - name: Decal
+    uniqueID: 1297021379
+    locked: 0
+  - name: Player
+    uniqueID: 4055880179
+    locked: 0
+  - name: Item
+    uniqueID: 849081487
+    locked: 0
+  - name: Unit
+    uniqueID: 3579163867
+    locked: 0
   m_RenderingLayers:
   - Default

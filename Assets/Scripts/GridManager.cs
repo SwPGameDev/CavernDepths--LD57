@@ -12,10 +12,10 @@ public class GridManager : MonoBehaviour
         tilemap = GetComponentInChildren<Tilemap>();
         grid = GetComponent<Grid>();
 
-        tilemap.CompressBounds();
+        //tilemap.CompressBounds();
 
-        Debug.Log("SIZE: " + tilemap.size);
-        Debug.Log("Bounds: " + tilemap.cellBounds);
+        //Debug.Log("SIZE: " + tilemap.size);
+        //Debug.Log("Bounds: " + tilemap.cellBounds);
         
     }
 
