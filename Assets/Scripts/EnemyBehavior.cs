@@ -11,7 +11,10 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField] float idleCooldown = 3;
     float idleTimer = 0;
     public int lateralMovementDirection = 0;
+
     // Raycasts for walls/gaps
+    
+
 
     [Header("Movement")]
     [SerializeField] float aggroRange = 5;
@@ -22,6 +25,7 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField] float deceleration = 5;
     [SerializeField] float leapForce = 10;
     [SerializeField] float jumpHeight = 3;
+    [SerializeField] float checkDistance = 1;
 
     Vector2 currentPos;
     Vector2 currentMovementDirection;
@@ -129,7 +133,24 @@ public class EnemyBehavior : MonoBehaviour
 
         // Move
         rb.linearVelocityX = Mathf.MoveTowards(rb.linearVelocityX, lateralMovementDirection * speed, acceleration * Time.fixedDeltaTime);
-        
+
+        if (grounded)
+        {
+            // Check Left
+            RaycastHit2D leftHitInfo = Physics2D.Raycast(transform.position, -1 * transform.right, checkDistance, groundingLayerMask);
+            if (leftHitInfo)
+            {
+                Jump(jumpHeight);
+            }
+
+            // Check Right
+            RaycastHit2D rightHitInfo = Physics2D.Raycast(transform.position, transform.right, checkDistance, groundingLayerMask);
+            if (rightHitInfo)
+            {
+                Jump(jumpHeight);
+            }
+        }
+
     }
 
 
@@ -143,7 +164,9 @@ public class EnemyBehavior : MonoBehaviour
     {
         float jumpForce = (Mathf.Sqrt(height * gravity * -2)) * rb.mass;
         Debug.Log("JUMP FORCE: " + jumpForce);
-        rb.AddForce(jumpForce * Vector2.up, ForceMode2D.Impulse);
+        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+
+        Debug.DrawLine(currentPos, Vector2.up * jumpForce, Color.white, 2);
     }
 
     void JumpAtTarget()
@@ -174,17 +197,30 @@ public class EnemyBehavior : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (aggro)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, target.transform.position);
-        }
+        //if (aggro)
+        //{
+        //    Gizmos.color = Color.red;
+        //    Gizmos.DrawLine(transform.position, target.transform.position);
+        //}
 
 
+        //Gizmos.color = Color.cyan;
+        //Gizmos.DrawLine(transform.position, transform.position + transform.right);
+
+        //Gizmos.color = Color.yellow;
+        //Gizmos.DrawLine(transform.position, currentMovementDirection);
+
+
+        // LEFT
+        Gizmos.color = new Color(0.172f, 0.12f, 0.186f, 1);
+        Gizmos.DrawLine(transform.position, transform.position + (-1 * checkDistance * transform.right));
+
+        // RIGHT
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, transform.position + (transform.right * checkDistance));
+
+        // UP
         Gizmos.color = Color.cyan;
-        Gizmos.DrawLine(transform.position, transform.position + transform.right);
-
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(transform.position, currentMovementDirection);
+        Gizmos.DrawLine(transform.position, transform.position + (transform.up * jumpHeight));
     }
 }

@@ -1,14 +1,14 @@
 fileFormatVersion: 2
-guid: 021fd67bae7d1ab469fa5bc40098555b
+guid: 858284d7172d8a146851d97ca379feb6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5237074582503671387
-    second: rat_0
+      213: 3071002835212280418
+    second: rat-Emission_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
-    mipMapMode: 1
+    mipMapMode: 0
     enableMipMap: 1
     sRGBTexture: 1
     linearTexture: 0
@@ -113,23 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: rat_0
+      name: rat-Emission_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 18
+        y: 0
         width: 64
-        height: 29
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5a934a71a6c2257b0800000000000000
-      internalID: -5237074582503671387
+      spriteID: 262ab09cec46e9a20800000000000000
+      internalID: 3071002835212280418
       vertices: []
       indices: 
       edges: []
@@ -139,18 +139,16 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
-    secondaryTextures:
-    - texture: {fileID: 2800000, guid: 858284d7172d8a146851d97ca379feb6, type: 3}
-      name: _Emission
+    secondaryTextures: []
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      rat_0: -5237074582503671387
+      rat-Emission_0: 3071002835212280418
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

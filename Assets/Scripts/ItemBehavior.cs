@@ -97,6 +97,7 @@ public class ItemBehavior : MonoBehaviour, IHoldable
         currentAmmo = maxAmmoCount;
     }
 
+
     private void Update()
     {
         currentPos = new Vector2(transform.position.x, transform.position.y);
